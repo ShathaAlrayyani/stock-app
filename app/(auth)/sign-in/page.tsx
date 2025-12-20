@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { InputField } from "@/components/InputField";
 import { FooterLink } from "@/components/FooterLink";
 
-const SignIn = ({}: SignInFormData) => {
+const SignIn = () => {
   const {
     formState: { errors, isSubmitting },
     handleSubmit,
