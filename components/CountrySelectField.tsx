@@ -41,7 +41,6 @@ const CountrySelect = ({
 
   // Get country options with flags
   const countries = useMemo(() => countryList().getData(), []);
-  console.log("🚀 ~ CountrySelect ~ countries:", countries);
 
   // Helper function to get flag emoji
   const getFlagEmoji = (countryCode: string) => {

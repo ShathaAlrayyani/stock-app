@@ -3,8 +3,11 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { InputField } from "@/components/InputField";
 import { FooterLink } from "@/components/FooterLink";
+import { signInWithEmail } from "@/lib/actions/auth.actions";
+import { useRouter } from "next/navigation";
 
 const SignIn = () => {
+  const router = useRouter();
   const {
     formState: { errors, isSubmitting },
     handleSubmit,
@@ -18,6 +21,8 @@ const SignIn = () => {
   const onSubmit = async (data: SignInFormData) => {
     try {
       console.log("🚀 ~ onSubmit ~ data:", data);
+      const result = await signInWithEmail(data);
+      if (result.success) router.push("/");
     } catch (e) {
       console.error("🚀 ~ onSubmit ~ e:", e);
     }
