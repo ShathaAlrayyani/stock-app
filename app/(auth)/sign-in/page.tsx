@@ -5,6 +5,7 @@ import { InputField } from "@/components/InputField";
 import { FooterLink } from "@/components/FooterLink";
 import { signInWithEmail } from "@/lib/actions/auth.actions";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const SignIn = () => {
   const router = useRouter();
@@ -20,11 +21,14 @@ const SignIn = () => {
   });
   const onSubmit = async (data: SignInFormData) => {
     try {
-      console.log("🚀 ~ onSubmit ~ data:", data);
       const result = await signInWithEmail(data);
+      if (result.success === false) {
+        toast.error(result.error);
+      }
       if (result.success) router.push("/");
-    } catch (e) {
-      console.error("🚀 ~ onSubmit ~ e:", e);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      toast.error(e.message);
     }
   };
   return (
@@ -39,8 +43,10 @@ const SignIn = () => {
           register={register}
           validation={{
             required: "This field is required",
-            pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-            massage: "Please Write Your Email Correctly",
+            pattern: {
+              value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+              message: "Please Write Your Email Correctly",
+            },
           }}
         />
 
@@ -51,7 +57,7 @@ const SignIn = () => {
           placeholder="Enter a strong password"
           register={register}
           type="password"
-          validation={{ required: "This field is required", minLength: 8 }}
+          validation={{ required: "This field is required" }}
         />
 
         <Button

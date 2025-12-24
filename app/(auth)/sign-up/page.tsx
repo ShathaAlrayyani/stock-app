@@ -36,10 +36,13 @@ const SignUp = () => {
 
   const onSubmit = async (data: SignUpFormData) => {
     try {
-      console.log("🚀 ~ onSubmit ~ data:", data);
       //sign up with email function
       const result = await signUpWithEmail(data);
-      if (result.success) router.push("/");
+      if (result.success === true) router.push("/");
+
+      if (result.success === false) {
+        toast.error(result.error);
+      }
     } catch (e) {
       console.error("🚀 ~ onSubmit ~ e:", e);
       toast.error("Sign up failed", {
@@ -70,17 +73,11 @@ const SignUp = () => {
           register={register}
           validation={{
             required: "This field is required",
-            pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-            massage: "Please Write Your Email Correctly",
+            pattern: {
+              value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+              message: "Please Write Your Email Correctly",
+            },
           }}
-        />
-
-        <CountrySelectField
-          name="country"
-          label="Country"
-          control={control}
-          error={errors.country}
-          required
         />
 
         <InputField
@@ -90,7 +87,23 @@ const SignUp = () => {
           placeholder="Enter a strong password"
           register={register}
           type="password"
-          validation={{ required: "This field is required", minLength: 8 }}
+          validation={{
+            required: "This field is required",
+            pattern: {
+              value:
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+              message:
+                "Password must be at least 8 characters, include uppercase, lowercase, a number, and a special character",
+            },
+          }}
+        />
+
+        <CountrySelectField
+          name="country"
+          label="Country"
+          control={control}
+          error={errors.country}
+          required
         />
 
         <SelectField
