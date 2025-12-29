@@ -9,7 +9,6 @@ export const isUserExist = async () => {
   try {
     const users = await auth.api.listUserAccounts({ headers: await headers() });
     // const user = await auth.api.({ headers: await headers() });
-    console.log("🚀 ~ isUserExist ~ users:", users);
     return { success: true, data: users };
   } catch (err) {
     console.error("failed to get userList ", err);
