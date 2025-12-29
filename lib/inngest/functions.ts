@@ -11,17 +11,12 @@ import {
   PERSONALIZED_WELCOME_EMAIL_PROMPT,
 } from "./prompts";
 import { getNews } from "@/lib/actions/finnhub.actions";
-import { email } from "better-auth";
-import { formatDateToday, getFormattedTodayDate } from "../utils";
+import { getFormattedTodayDate } from "../utils";
 
 export const sendSignUpEmail = inngest.createFunction(
   { id: "sign-up-email" },
   { event: "app/user.created" },
   async ({ event, step }) => {
-    console.log(
-      "GEMINI_API_KEY exists:",
-      process.env.GEMINI_API_KEY ? "YES" : "NO"
-    );
     const userProfile = `
 - Country: ${event.data.country}
 - Investment goals: ${event.data.investmentGoals}
