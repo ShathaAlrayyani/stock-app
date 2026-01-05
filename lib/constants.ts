@@ -1,3 +1,6 @@
+export const FEMALE_IMG_SRC = '/assets/images/female-photo.jpg'
+export const MALE_IMG_SRC = '/assets/images/male-photo.jpg'
+
 export const NAV_ITEMS = [
   { href: "/", label: "Dashboard" },
   { href: "/search", label: "Search" },

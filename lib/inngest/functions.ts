@@ -1,8 +1,7 @@
-import { use } from "react";
 import { getAllUsersForNewsEmail } from "../actions/user.actions";
 import { getWatchlistSymbolsByEmail } from "../actions/watchlist.actions";
 import {
-  /* sendNewsSummaryEmail ,*/ sendNewsSummaryEmail,
+  sendNewsSummaryEmail,
   sendWelcomeEmail,
 } from "../nodemailer";
 import { inngest } from "./client";
