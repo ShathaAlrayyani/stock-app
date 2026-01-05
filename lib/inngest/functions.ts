@@ -1,16 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getAllUsersForNewsEmail } from "../actions/user.actions";
 import { getWatchlistSymbolsByEmail } from "../actions/watchlist.actions";
-import {
-  sendNewsSummaryEmail,
-  sendWelcomeEmail,
-} from "../nodemailer";
+import { sendNewsSummaryEmail, sendWelcomeEmail } from "../nodemailer";
 import { inngest } from "./client";
 import {
   NEWS_SUMMARY_EMAIL_PROMPT,
   PERSONALIZED_WELCOME_EMAIL_PROMPT,
 } from "./prompts";
 import { getNews } from "@/lib/actions/finnhub.actions";
-import { getFormattedTodayDate } from "../utils";
+import { buildNewsText, getFormattedTodayDate } from "../utils";
 
 export const sendSignUpEmail = inngest.createFunction(
   { id: "sign-up-email" },
@@ -95,9 +93,17 @@ export const sendDailyNewsSummary = inngest.createFunction(
     const userNewsSummaries: { user: User; newsContent: string | null }[] = [];
     for (const { user, articles } of results) {
       try {
+        if (!articles || articles.length === 0) {
+          userNewsSummaries.push({
+            user,
+            newsContent: "<p>No major market news today.</p>",
+          });
+          continue;
+        }
+
         const prompt = NEWS_SUMMARY_EMAIL_PROMPT.replace(
           "{{newsData}}",
-          JSON.stringify(articles, null, 2)
+          buildNewsText(articles)
         );
 
         const response = await step.ai.infer(`summarize-news-${user.email}`, {
@@ -112,8 +118,8 @@ export const sendDailyNewsSummary = inngest.createFunction(
           (part && "text" in part ? part.text : null) || "No market news.";
 
         userNewsSummaries.push({ user, newsContent });
-      } catch (e) {
-        console.error("Failed to summarize news for: ", user.email);
+      } catch (e: any) {
+        console.error("Failed to summarize news for: ", e.message);
         userNewsSummaries.push({ user, newsContent: null });
       }
     }
