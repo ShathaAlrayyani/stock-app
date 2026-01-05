@@ -137,3 +137,16 @@ export const getFormattedTodayDate = () =>
     day: "numeric",
     timeZone: "UTC",
   });
+
+export const buildNewsText = (articles: MarketNewsArticle[]) => {
+  return articles
+    .map(
+      (a, i) => `
+Article ${i + 1}
+Title: ${a.headline}
+Summary: ${a.summary || ""}
+URL: ${a.url}
+`
+    )
+    .join("\n");
+};
