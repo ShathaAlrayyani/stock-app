@@ -2,13 +2,5 @@
   command = "yarn build"
   publish = ".next"
 
-[functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
-
 [[plugins]]
-  package = "netlify-plugin-inngest"
-
-  [plugins.inputs]
-    host = "https://signalist-stock-web.netlify.app"
-    path = "/api/inngest"
+  package = "@netlify/plugin-nextjs"
