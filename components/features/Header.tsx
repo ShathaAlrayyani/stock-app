@@ -4,7 +4,7 @@ import { UserDropdown } from "../UserDropdown";
 import { NavItems } from "../NavItems";
 import { searchStocks } from "@/lib/actions/finnhub.actions";
 export const Header = async ({ user }: { user: User }) => {
-  const initialStocks:StockWithWatchlistStatus[] = await searchStocks();
+  const initialStocks = await searchStocks();
 
   return (
     <header className="sticky top-0 header">

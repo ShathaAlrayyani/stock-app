@@ -40,11 +40,8 @@ export const UserDropdown = ({
           <Avatar className="h-8 w-8">
             <AvatarImage
               src={
-                !!user?.imgSrc
-                  ? user.imgSrc
-                  : user.gender === "female"
-                  ? FEMALE_IMG_SRC
-                  : MALE_IMG_SRC
+                user?.imgSrc ||
+                (user.gender === "female" ? FEMALE_IMG_SRC : MALE_IMG_SRC)
               }
             />
             <AvatarFallback className="bg-yellow-500 text-yellow-900 text-sm font-bold">
@@ -64,11 +61,8 @@ export const UserDropdown = ({
             <Avatar className="h-10 w-10">
               <AvatarImage
                 src={
-                  !!user?.imgSrc
-                    ? user.imgSrc
-                    : user.gender === "female"
-                    ? FEMALE_IMG_SRC
-                    : MALE_IMG_SRC
+                  user?.imgSrc ||
+                  (user.gender === "female" ? FEMALE_IMG_SRC : MALE_IMG_SRC)
                 }
               />
               <AvatarFallback className="bg-yellow-500 text-yellow-900 text-sm font-bold">

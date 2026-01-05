@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   CommandDialog,
   CommandEmpty,
@@ -30,7 +30,7 @@ export default function SearchCommand({
     useState<StockWithWatchlistStatus[]>(initialStocks);
 
   const isSearchMode = !!searchTerm.trim();
-  const displayStocks = isSearchMode ? stocks : stocks?.slice(0, 10);
+  const displayStocks = isSearchMode ? stocks : stocks.slice(0, 10);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -43,7 +43,7 @@ export default function SearchCommand({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  const handleSearch = async () => {
+  const handleSearch = useCallback(async () => {
     if (!isSearchMode) return setStocks(initialStocks);
 
     setLoading(true);
@@ -55,19 +55,19 @@ export default function SearchCommand({
     } finally {
       setLoading(false);
     }
-  };
+  }, [initialStocks, searchTerm, isSearchMode]);
 
   const debouncedSearch = useDebounce(handleSearch, 300);
 
   useEffect(() => {
     debouncedSearch();
-  }, [searchTerm]);
+  }, [debouncedSearch]);
 
-  const handleSelectStock = () => {
+  const handleSelectStock = useCallback(() => {
     setOpen(false);
     setSearchTerm("");
     setStocks(initialStocks);
-  };
+  }, [initialStocks]);
 
   return (
     <>
